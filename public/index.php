@@ -31,7 +31,7 @@ session_start();
 | 
 | Require vendor autoload
 */
-require __DIR__ . '/vendor/autoload.php';
+require __DIR__ . '/../vendor/autoload.php';
 
 /*
 | ------------------------------------------------------------------------------
@@ -49,7 +49,7 @@ $route = new \Lib\Routing\Route();
 | 
 | Require application routes
 */
-require __DIR__ . '/app/routes.php';
+require __DIR__ . '/../app/routes.php';
 
 /*
 | -------------------------------------------------------------------
