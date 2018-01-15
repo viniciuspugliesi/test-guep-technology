@@ -1,0 +1,24 @@
+{
+    "name": "viniciuspugliesi/test-guep-technology",
+    "description": "Test for full PHP developer at Guep Technology",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Vinicius Pugliesi",
+            "email": "vinicius_pugliesi@outlook.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.0"
+    },
+    "autoload":{
+        "files": [
+            "lib/Support/helpers.php"
+        ],
+		"psr-4":{
+			"App\\": "app/",
+			"Lib\\": "lib/"
+		}
+	}
+}
