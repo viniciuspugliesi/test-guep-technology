@@ -27,28 +27,38 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($users as $user) : ?>
+                    <?php if ($users) : ?>
+                        <?php foreach ($users as $user) : ?>
+                            <tr>
+                                <td><?= $user->id ?></td>
+                                <td><?= $user->first_name ?></td>
+                                <td><?= $user->last_name ?></td>
+                                <td><?= implode($user->groups, ', ') ?></td>
+                                <td><?= $user->created_at ?></td>
+                                <td>
+                                    <a href="/usuarios/editar/<?= $user->id ?>" class="btn btn-warning btn-small" title="Editar informações">
+                                        Editar
+                                    </a>
+                                    <button data-href="/usuarios/excluir/<?= $user->id ?>" class="btn btn-danger btn-small destroy mg-6--vertical" data-toggle="modal" data-target=".modal-confirm" data-destroy="<?= $user->first_name ?>" title="Excluir grupo">
+                                        Excluir
+                                    </button>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php else : ?>
                         <tr>
-                            <td><?= $user->id ?></td>
-                            <td><?= $user->first_name ?></td>
-                            <td><?= $user->last_name ?></td>
-                            <td><?= implode($user->groups, ', ') ?></td>
-                            <td><?= $user->created_at ?></td>
-                            <td>
-                                <a href="/usuarios/editar/<?= $user->id ?>" class="btn btn-warning btn-small" title="Editar informações">
-                                    Editar
-                                </a>
-                                <button data-href="/usuarios/excluir/<?= $user->id ?>" class="btn btn-danger btn-small destroy mg-6--vertical" data-toggle="modal" data-target=".modal-confirm" data-destroy="<?= $user->first_name ?>" title="Excluir grupo">
-                                    Excluir
-                                </button>
+                            <td colspan="6">
+                                Nenhum registro encontrado.
                             </td>
                         </tr>
-                    <?php endforeach; ?>
+                    <?php endif; ?>
                 </tbody>
             </table>
         </div>
         
-        <?php include(__DIR__ . '/../includes/pagination.php') ?>
+        <?php if ($users) : ?>
+            <?php include(__DIR__ . '/../includes/pagination.php') ?>
+        <?php endif; ?>
     </div>
     
     <?php include(__DIR__ . '/../includes/modal-confirm.php') ?>

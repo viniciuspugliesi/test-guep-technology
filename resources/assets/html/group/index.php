@@ -25,26 +25,36 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($groups as $group) : ?>
+                    <?php if ($groups) : ?>
+                        <?php foreach ($groups as $group) : ?>
+                            <tr>
+                                <td><?= $group->id ?></td>
+                                <td><?= $group->name ?></td>
+                                <td><?= $group->created_at ?></td>
+                                <td>
+                                    <a href="/grupos/editar/<?= $group->id ?>" class="btn btn-warning btn-small" title="Editar informações">
+                                        Editar
+                                    </a>
+                                    <button data-href="/grupos/excluir/<?= $group->id ?>" class="btn btn-danger btn-small destroy mg-6--vertical" data-toggle="modal" data-target=".modal-confirm" data-destroy="<?= $group->name ?>" title="Excluir grupo">
+                                        Excluir
+                                    </button>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php else : ?>
                         <tr>
-                            <td><?= $group->id ?></td>
-                            <td><?= $group->name ?></td>
-                            <td><?= $group->created_at ?></td>
-                            <td>
-                                <a href="/grupos/editar/<?= $group->id ?>" class="btn btn-warning btn-small" title="Editar informações">
-                                    Editar
-                                </a>
-                                <button data-href="/grupos/excluir/<?= $group->id ?>" class="btn btn-danger btn-small destroy mg-6--vertical" data-toggle="modal" data-target=".modal-confirm" data-destroy="<?= $group->name ?>" title="Excluir grupo">
-                                    Excluir
-                                </button>
+                            <td colspan="4">
+                                Nenhum registro encontrado.
                             </td>
                         </tr>
-                    <?php endforeach; ?>
+                    <?php endif; ?>
                 </tbody>
             </table>
         </div>
         
-        <?php include(__DIR__ . '/../includes/pagination.php') ?>
+        <?php if ($groups) : ?>
+            <?php include(__DIR__ . '/../includes/pagination.php') ?>
+        <?php endif; ?>
     </div>
     
     <?php include(__DIR__ . '/../includes/modal-confirm.php') ?>
