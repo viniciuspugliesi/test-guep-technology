@@ -1,14 +1,14 @@
 module.exports = {
     paths: {
         src: {
-    		html: 'app/resources/assets/html/**/*',
-    		font: 'app/resources/assets/fonts/**/*',
-    		sass: 'app/resources/assets/scss/**/*.scss',
-    		js: 'app/resources/assets/js/**/*.js',
-    		image: 'app/resources/assets/images/**/*'
+    		html: 'resources/assets/html/**/*',
+    		font: 'resources/assets/fonts/**/*',
+    		sass: 'resources/assets/scss/**/*.scss',
+    		js: 'resources/assets/js/**/*.js',
+    		image: 'resources/assets/images/**/*'
     	},
     	dest: {
-    		html: 'app/resources/views/',
+    		html: 'resources/views/',
     		font: 'public/fonts/',
     		sass: 'public/css/',
     		js: 'public/js/',

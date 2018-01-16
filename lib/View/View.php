@@ -19,6 +19,6 @@ class View
         
         $view = str_replace('.', '/', $view);
         
-        return include(__DIR__ . '/../../app/resources/views/' . $view . '.php');
+        return include(__DIR__ . '/../../resources/views/' . $view . '.php');
     }
 }

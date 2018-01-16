@@ -10,13 +10,13 @@
 $route->get('/', 'UserController@index');
 $route->get('/usuarios', 'UserController@index');
 
-$route->get('/usuarios/editar/{id}', 'UserController@index');
+$route->get('/usuarios/editar/{id}', 'UserController@edit');
 $route->post('/usuarios/editar/{id}', 'UserController@update');
 
-$route->get('/usuarios/cadastar', 'UserController@create');
-$route->post('/usuarios/cadastar', 'UserController@store');
+$route->get('/usuarios/cadastrar', 'UserController@create');
+$route->post('/usuarios/cadastrar', 'UserController@store');
 
-$route->get('/usuarios/excluir/{id}', 'UserController@destroy');
+$route->post('/usuarios/excluir/{id}', 'UserController@destroy');
 
 /*
 | ------------------------------------------------------------------------------
@@ -27,10 +27,10 @@ $route->get('/usuarios/excluir/{id}', 'UserController@destroy');
 */
 $route->get('/grupos', 'GroupController@index');
 
-$route->get('/grupos/editar/{id}', 'GroupController@index');
+$route->get('/grupos/editar/{id}', 'GroupController@edit');
 $route->post('/grupos/editar/{id}', 'GroupController@update');
 
-$route->get('/grupos/cadastar', 'GroupController@create');
-$route->post('/grupos/cadastar', 'GroupController@store');
+$route->get('/grupos/cadastrar', 'GroupController@create');
+$route->post('/grupos/cadastrar', 'GroupController@store');
 
-$route->get('/grupos/excluir/{id}', 'GroupController@destroy');
+$route->post('/grupos/excluir/{id}', 'GroupController@destroy');

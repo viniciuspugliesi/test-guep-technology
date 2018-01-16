@@ -1,0 +1,40 @@
+// Margin
+.mg {
+    margin: 10px;
+    
+    @for $i from 6 through 50 {
+        
+        @if $i % 2 == 0 {
+            
+            &-#{$i} {
+                margin: #{$i}px;
+            }
+            
+            &-#{$i}--horizontal {
+                margin-right: #{$i}px;
+                margin-left: #{$i}px;
+            }
+            
+            &-#{$i}--vertical {
+                margin-top: #{$i}px;
+                margin-bottom: #{$i}px;
+            }
+            
+            &-#{$i}--top {
+                margin-top: #{$i}px;
+            }
+            
+            &-#{$i}--right {
+                margin-right: #{$i}px;
+            }
+            
+            &-#{$i}--bottom {
+                margin-bottom: #{$i}px;
+            }
+            
+            &-#{$i}--left {
+                margin-left: #{$i}px;
+            }
+        }
+    }
+}

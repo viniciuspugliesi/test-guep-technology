@@ -8,6 +8,7 @@ return [
     |   
     |  Connection config with MySQL
     */
+    
     'host'      => 'localhost',
     'user'      => 'viniciuspugliesi',
     'pass'      => '',

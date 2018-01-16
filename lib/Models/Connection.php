@@ -7,36 +7,26 @@ use PDO;
 class Connection
 {
 	/**
-	 * Host name of this connection
-	 * 
 	 * @var string
 	 */ 
 	private $host;
     
 	/**
-	 * Database name of this connection
-	 * 
 	 * @var string
 	 */ 
 	private $database;
 	
 	/**
-	 * Charset type of this connection
-	 * 
 	 * @var string
 	 */ 
 	private $charset;
 	
 	/**
-	 * User name of this connection
-	 * 
 	 * @var string
 	 */ 
 	private $user;
 	
 	/**
-	 * Pass of this connection
-	 * 
 	 * @var string
 	 */ 
 	private $pass;
@@ -72,7 +62,7 @@ class Connection
     /**
      * Unset the connection with database
      * 
-	 * @param PDO
+	 * @param \PDO
 	 * @return void
      */	
 	public function disconnect(PDO $conn)
@@ -83,7 +73,7 @@ class Connection
     /**
      * Set the attributes of this class
      *
-	 * @return void
+	 * @return $this
      */	
 	private function setAttributes()
 	{
@@ -94,5 +84,7 @@ class Connection
 		$this->pass		= $config_connection['pass'];
 		$this->charset	= $config_connection['charset'];
 		$this->database = $config_connection['database'];
+		
+		return $this;
 	}
 }

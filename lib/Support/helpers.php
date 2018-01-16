@@ -1,6 +1,8 @@
 <?php
 
 use Lib\View\View;
+use Lib\Redirector\Redirect;
+use Lib\Url\Url;
 
 /**
  * Function returns of views file
@@ -13,6 +15,32 @@ if (!function_exists('view')) {
     function view(string $view, array $param = [])
     {
         return (new View())->render($view, $param);
+    }
+}
+
+/**
+ * Function returns of Redirect class
+ *
+ * @param string $route
+ * @return mixed
+ */
+if (!function_exists('redirect')) {
+    function redirect(string $route = '')
+    {
+        return new Redirect($route);
+    }
+}
+
+/**
+ * Function returns of Url class
+ *
+ * @param string $route
+ * @return mixed
+ */
+if (!function_exists('url')) {
+    function url(string $concat = '')
+    {
+        return new Url($concat);
     }
 }
 

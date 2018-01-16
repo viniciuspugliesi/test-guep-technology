@@ -93,6 +93,31 @@ abstract class Repository
     }
     
     /**
+     * Paginate results
+     * 
+     * @param int $take
+     * @return array
+     */
+    public function paginate(int $take) : array
+    {
+        $page  = $_GET['pagina'] ?? 1;
+        $page  = ($page === 0) ? 1 : $page;
+        $page -= 1;
+        $page  = $page * $take;
+        
+        $query = 'SELECT * FROM ' . $this->entity->table . ' LIMIT ' . $page . ', ' . $take;
+        
+        $result = [];
+        $data   = $this->database->query($query)->get();
+        
+        foreach ($data as $item) {
+            $result[] = $this->exchange($item);
+        }
+        
+        return $result;
+    }
+    
+    /**
      * Delete one result
      * 
      * @param int $id
@@ -102,7 +127,7 @@ abstract class Repository
     {
         $query = 'DELETE FROM ' . $this->entity->table . ' WHERE ' . $this->entity->primary_key . ' = ' . $id;
         
-        return $this->database->query($query)->execute();
+        return $this->execute($query);
     }
     
     /**
@@ -118,31 +143,33 @@ abstract class Repository
         $table   = $this->database->query('DESCRIBE ' . $this->entity->table)->get();
         
         foreach ($table as $info) {
-            $field = $info['Field'];
-            $setters[$field] = $field . " = '" . $data[$field] . "'";
+            if ($info['Key'] !== 'PRI' && $info['Field'] !== 'created_at' && $info['Field'] !== 'updated_at' ) {
+                $field = $info['Field'];
+                $setters[$field] = $field . " = '" . $data[$field] . "'";
+            }
         }
         
         $setters['updated_at'] = "updated_at = '" . date('Y-m-d H:i:s') . "'";
         
         $query = 'UPDATE ' . $this->entity->table . ' SET ' . implode($setters, ', ') . ' WHERE ' . $this->entity->primary_key . ' = ' . $id;
         
-        return $this->database->query($query)->execute();
+        return $this->execute($query);
     }
     
     /**
      * Create new register
      * 
      * @param array $data
-     * @return object
+     * @return bool
      */
-    public function create(array $data)
+    public function create(array $data) : bool
     {
         $setters = [];
         $table   = $this->database->query('DESCRIBE ' . $this->entity->table)->get();
         
         foreach ($table as $info) {
             $field = $info['Field'];
-            $setters[$field] = ($data[$field]) ? "'" . $data[$field] . "'" : 'null';
+            $setters[$field] = isset($data[$field]) ? "'" . $data[$field] . "'" : 'null';
         }
         
         $setters['created_at'] = "'" . date('Y-m-d H:i:s') . "'";
@@ -150,7 +177,29 @@ abstract class Repository
         
         $query = 'INSERT INTO ' . $this->entity->table . ' (' . implode(array_keys($setters), ', ') . ') VALUES (' . implode($setters, ', ') . ')';
         
+        return $this->execute($query);
+    }
+    
+    /**
+     * Execute one query
+     * 
+     * @param strig $query
+     * @return bool
+     */
+    public function execute(string $query) : bool
+    {
         return $this->database->query($query)->execute();
+    }
+    
+    /**
+     * Get registers query
+     * 
+     * @param strig $query
+     * @return mixed
+     */
+    public function get(string $query)
+    {
+        return $this->database->query($query)->get();
     }
     
     /**
@@ -183,16 +232,18 @@ abstract class Repository
      */
     private function exchange(array $data)
     {
-        $reflection = new ReflectionClass($this->entity);
+        $entity = new $this->entity;
+        
+        $reflection = new ReflectionClass($entity);
         
         foreach ($reflection->getProperties() as $prop) {
             $attribute = $prop->getName();
             
             if (array_key_exists($attribute, $data)) {
-                $this->entity->$attribute = $data[$attribute];
+                $entity->$attribute = $data[$attribute];
             }
         }
         
-        return $this->entity;
+        return $entity;
     }
 }

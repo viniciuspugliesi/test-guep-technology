@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\Repositories\GroupRepository;
+use App\Validation\GroupValidator;
 
 class GroupController
 {
@@ -28,8 +29,12 @@ class GroupController
      */
     public function index()
     {
+        $total = count($this->group->all());
+        
         return view('group.index', [
-            'groups' => $this->group->all(),
+            'total'       => $total,
+            'count_pages' => ceil($total / 5),
+            'groups'      => $this->group->paginate(5),
         ]);
     }
 
@@ -50,32 +55,29 @@ class GroupController
      */
     public function store()
     {
+        $validator = new GroupValidator($_POST);
+        
+        if (!$validator->check()) {
+            return redirect()->back()->with('error', $validator->firstError())->go();
+        }
+        
         $this->group->create($_POST);
         
-        return redirect()->back()->withSuccess('Grupo cadastrado com sucesso.');
-    }
-
-    /**
-     * Display the specified group.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show(int $id)
-    {
-        return view('group.show', [
-            'group' => $this->group->findOrFail($id),
-        ]);
+        return redirect()->back()->with('success', 'Grupo cadastrado com sucesso.')->go();
     }
 
     /**
      * Show the form for editing the specified group.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(int $id)
+    public function edit($id)
     {
+        if (!(int) $id) {
+            return abort(404);
+        }
+        
         return view('group.edit', [
             'group' => $this->group->findOrFail($id),
         ]);
@@ -87,11 +89,21 @@ class GroupController
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(int $id)
+    public function update($id)
     {
+        if (!(int) $id) {
+            return abort(404);
+        }
+        
+        $validator = new GroupValidator($_POST);
+        
+        if (!$validator->check()) {
+            return redirect()->back()->with('error', $validator->firstError())->go();
+        }
+        
         $this->group->update($id, $_POST);
         
-        return redirect()->back()->withSuccess('Grupo editado com sucesso.');
+        return redirect()->back()->with('success', 'Grupo editado com sucesso.')->go();
     }
 
     /**
@@ -100,10 +112,16 @@ class GroupController
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(int $id)
+    public function destroy($id)
     {
-        $this->group->delete($id);
+        if (!(int) $id) {
+            return abort(404);
+        }
         
-        return redirect()->back()->withSuccess('Grupo excluído com sucesso.');
+        if (! $this->group->delete($id)) {
+            return redirect()->back()->with('error', 'Existem usuários vinculados a este grupo, exclua primeiro os usuários.')->go();
+        }
+        
+        return redirect()->back()->with('success', 'Grupo excluído com sucesso.')->go();
     }
 }

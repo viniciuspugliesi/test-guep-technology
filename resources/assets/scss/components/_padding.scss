@@ -1,0 +1,30 @@
+// Padding
+.pd {
+    padding: 10px;
+    
+    @for $i from 6 through 50 {
+        
+        @if $i % 2 == 0 {
+            
+            &-#{$i} {
+                padding: #{$i}px;
+            }
+            
+            &-#{$i}--top {
+                padding-top: #{$i}px;
+            }
+            
+            &-#{$i}--right {
+                padding-right: #{$i}px;
+            }
+            
+            &-#{$i}--bottom {
+                padding-bottom: #{$i}px;
+            }
+            
+            &-#{$i}--left {
+                padding-left: #{$i}px;
+            }
+        }
+    }
+}

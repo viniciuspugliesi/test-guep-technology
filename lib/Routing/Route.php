@@ -46,7 +46,7 @@ class Route extends Router
      * @param string $callback
      * @return void
      */
-    public function post()
+    public function post(string $url, string $callback)
     {
         if ($_SERVER['REQUEST_METHOD'] != 'POST') {
             return false;
@@ -62,7 +62,7 @@ class Route extends Router
      * @param string $callback
      * @return void
      */
-    public function put()
+    public function put(string $url, string $callback)
     {
         if ($_SERVER['REQUEST_METHOD'] != 'PUT') {
             return false;
@@ -78,7 +78,7 @@ class Route extends Router
      * @param string $callback
      * @return void
      */
-    public function delete()
+    public function delete(string $url, string $callback)
     {
         if ($_SERVER['REQUEST_METHOD'] != 'DELETE') {
             return false;

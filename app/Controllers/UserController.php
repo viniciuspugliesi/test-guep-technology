@@ -3,6 +3,8 @@
 namespace App\Controllers;
 
 use App\Models\Repositories\UserRepository;
+use App\Models\Repositories\GroupRepository;
+use App\Validation\UserValidator;
 
 class UserController
 {
@@ -28,8 +30,12 @@ class UserController
      */
     public function index()
     {
+        $total = count($this->user->all());
+        
         return view('user.index', [
-            'users' => $this->user->all(),
+            'total'       => $total,
+            'count_pages' => ceil($total / 5),
+            'users'       => $this->user->paginate(5),
         ]);
     }
 
@@ -40,7 +46,11 @@ class UserController
      */
     public function create()
     {
-        return view('user.create');
+        $group = new GroupRepository();
+        
+        return view('user.create', [
+            'groups' => $group->all(),
+        ]);
     }
 
     /**
@@ -50,34 +60,34 @@ class UserController
      */
     public function store()
     {
+        $validator = new UserValidator($_POST);
+        
+        if (!$validator->check()) {
+            return redirect()->back()->with('error', $validator->firstError())->go();
+        }
+        
         $this->user->create($_POST);
         
-        return redirect()->back()->withSuccess('Usuário cadastrado com sucesso.');
-    }
-
-    /**
-     * Display the specified user.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show(int $id)
-    {
-        return view('user.show', [
-            'user' => $this->user->findOrFail($id),
-        ]);
+        return redirect()->back()->with('success', 'Usuário cadastrado com sucesso.')->go();
     }
 
     /**
      * Show the form for editing the specified user.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(int $id)
+    public function edit($id)
     {
+        if (!(int) $id) {
+            return abort(404);
+        }
+        
+        $group = new GroupRepository();
+        
         return view('user.edit', [
-            'user' => $this->user->findOrFail($id),
+            'user'   => $this->user->findOrFail($id),
+            'groups' => $group->all(),
         ]);
     }
 
@@ -87,11 +97,21 @@ class UserController
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(int $id)
+    public function update($id)
     {
+        if (!(int) $id) {
+            return abort(404);
+        }
+        
+        $validator = new UserValidator($_POST);
+        
+        if (!$validator->check()) {
+            return redirect()->back()->with('error', $validator->firstError())->go();
+        }
+        
         $this->user->update($id, $_POST);
         
-        return redirect()->back()->withSuccess('Usuário editado com sucesso.');
+        return redirect()->back()->with('success', 'Usuário editado com sucesso.')->go();
     }
 
     /**
@@ -100,10 +120,14 @@ class UserController
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(int $id)
+    public function destroy($id)
     {
+        if (!(int) $id) {
+            return abort(404);
+        }
+        
         $this->user->delete($id);
         
-        return redirect()->back()->withSuccess('Usuário excluído com sucesso.');
+        return redirect()->back()->with('success', 'Usuário excluído com sucesso.')->go();
     }
 }

@@ -3,6 +3,7 @@
 namespace Lib\Models;
 
 use Lib\Models\Connection;
+use PDO;
 
 class Database extends Connection
 {
@@ -38,7 +39,7 @@ class Database extends Connection
     {
         $pdo = $this->getConnection();
         
-        $result = $pdo->query($this->query)->fetchAll(\PDO::FETCH_ASSOC);
+        $result = $pdo->query($this->query)->fetchAll(PDO::FETCH_ASSOC);
         
         $this->disconnect($pdo);
         
@@ -54,11 +55,11 @@ class Database extends Connection
     {
         $pdo = $this->getConnection();
         
-        $result = $pdo->query($this->query)->fetch(\PDO::FETCH_ASSOC);
+        $result = $pdo->query($this->query)->fetch(PDO::FETCH_ASSOC);
         
         $this->disconnect($pdo);
         
-        return $result;
+        return $result ? $result : [];
     }
     
     /**

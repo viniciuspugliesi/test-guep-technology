@@ -31,8 +31,12 @@ class Router
      */
     public function run()
     {
+        $full_url = $this->removeGetParams($this->base_url . $this->handlerUrl($_SERVER['REQUEST_URI']));
+        
         foreach ($this->routes as $route) {
-            if ($this->validate($route['url'])) {
+            if ($this->validate($full_url, $route['url'])) {
+                $_SESSION['history_url'] = $_SESSION['current_url'] ?? $full_url;
+                $_SESSION['current_url'] = $full_url;
                 return $this->handlerCallback($route['callback']);
             }
         }
@@ -41,15 +45,26 @@ class Router
     }
     
     /**
+     * Remove get params
+     * 
+     * @param string $url
+     * @return string
+     */
+    private function removeGetParams(string $url) : string
+    {
+        return explode('?', $url)[0];
+    }
+    
+    /**
      * Validate route
      * 
+     * @param string $full_url
      * @param string $url
      * @return bool
      */
-    private function validate(string $url) : bool
+    private function validate(string $full_url, string $url) : bool
     {
-        $full_url = $this->base_url . $this->handlerUrl($_SERVER['REQUEST_URI']);
-        $url      = $this->base_url . $this->handlerUrl($url);
+        $url = $this->base_url . $this->handlerUrl($url);
         
         if (preg_match_all('/[{]+[a-z]*[}]/', $url, $matches)) {
             

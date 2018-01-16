@@ -1,0 +1,71 @@
+// Bootstrap 3
+@import "node_modules/bootstrap-sass/assets/stylesheets/_bootstrap.scss";
+
+// Components
+@import "components/_variables";
+@import "components/_margin";
+@import "components/_padding";
+@import "components/_fonts";
+@import "components/_responsive";
+
+body {
+    overflow-x: hidden;
+}
+
+header {
+    .logo {
+        max-width: 50px;
+        margin-top: -11px;
+    }
+    
+    .dropdown-custom {
+        &:hover {
+            background-color: $btn-primary-color;
+        }
+    }
+}
+
+.panel-responsive {
+    min-width: 490px !important;
+    overflow-x: scroll;
+}
+
+.table-responsive {
+    overflow-x:auto;
+}
+
+table {
+    thead {
+        td {
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+    }
+}
+
+.title {
+   color: $default-color;
+   border-bottom: 1px solid $default-color;
+   padding-bottom: 3px;
+}
+
+.form {
+    padding-left: 0;
+}
+
+.message-js {
+    padding: 5px 5px 5px 12px;
+    border-radius: $alert-border-radius;
+    @include alert-variant($alert-danger-bg, $alert-danger-border, $alert-danger-text);
+    font-size: 12px;
+}
+
+.error-page {
+    height: 100vh;
+    background: $alert-danger-bg;
+    
+    .error-container {
+        margin-top: 140px;
+        text-align: center;
+    }
+}
