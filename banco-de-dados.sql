@@ -18,6 +18,9 @@
 --
 -- Table structure for table `groups`
 --
+CREATE DATABASE test_guep_technology;
+
+USE test_guep_technology;
 
 DROP TABLE IF EXISTS `groups`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
