@@ -10,12 +10,7 @@ function error_alert() {
         return;
     }
     
-    var_dump($e['type']);
-    var_dump($e['message']);
-    var_dump($e['file']);
-    var_dump($e['line']);
-    
-    die();
+    return abort(500, ['e' => $e]);
 }
 
 header('Content-Type: text/html; charset=utf-8');

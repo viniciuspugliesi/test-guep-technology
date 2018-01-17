@@ -82,12 +82,13 @@ if (!function_exists('dd')) {
  * Function abort application
  *
  * @param int $code
+ * @param array $exception
  * @return void
  */
 if (!function_exists('abort')) {
-    function abort(int $code)
+    function abort(int $code, array $exception = [])
     {
-        view('errors.' . $code);
+        view('errors.' . $code, $exception);
         die();
     }
 }

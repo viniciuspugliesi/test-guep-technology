@@ -11,5 +11,5 @@ $ composer install
 
 After installing the composer dependencies, run the following command below:
 ```
-$ php -S localhost:80
+$ php -S localhost:80 -t public/
 ```
